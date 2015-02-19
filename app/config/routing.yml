@@ -1,3 +1,4 @@
-app:
-    resource: @AppBundle/Controller/
+coyote_api:
+    resource: "@CoyoteApiBundle/Controller/"
     type:     annotation
+    prefix:   /
