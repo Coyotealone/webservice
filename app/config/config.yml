@@ -74,3 +74,14 @@ swiftmailer:
 
 bazinga_faker:
     orm: doctrine
+    entities:
+        Coyote\ApiBundle\Entity\Guild:
+            number: 50
+        Coyote\ApiBundle\Entity\Perso:
+            number: 50
+        Coyote\ApiBundle\Entity\Register:
+            number: 50
+        Coyote\ApiBundle\Entity\Helmet:
+            number: 50
+        Coyote\ApiBundle\Entity\Boot:
+            number: 50

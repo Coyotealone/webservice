@@ -41,17 +41,16 @@ class Guild
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="createdAt", type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      */
-    private $createdAt;
+    private $created_at;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
-
+    private $updated_at;
     /**
      * Constructor
      */
@@ -117,49 +116,48 @@ class Guild
     }
 
     /**
-     * Set createdAt
+     * Set created_at
      *
      * @param \DateTime $createdAt
      * @return Guild
      */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
-
-        return $this;
+    	if(!$this->getCreatedAt())
+    	{
+    		$this->created_at = new \DateTime();
+    	}
     }
 
     /**
-     * Get createdAt
+     * Get created_at
      *
      * @return \DateTime 
      */
     public function getCreatedAt()
     {
-        return $this->createdAt;
+        return $this->created_at;
     }
 
     /**
-     * Set updatedAt
+     * Set updated_at
      *
      * @param \DateTime $updatedAt
      * @return Guild
      */
     public function setUpdatedAt($updatedAt)
     {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
+        $this->updated_at = new \DateTime();
     }
 
     /**
-     * Get updatedAt
+     * Get updated_at
      *
      * @return \DateTime 
      */
     public function getUpdatedAt()
     {
-        return $this->updatedAt;
+        return $this->updated_at;
     }
 
     /**

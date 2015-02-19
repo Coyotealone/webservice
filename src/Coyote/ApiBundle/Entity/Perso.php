@@ -68,16 +68,20 @@ class Perso
      * @ORM\ManyToMany(targetEntity="Perso", mappedBy="myFriends")
      **/
     private $friendsWithMe;
-
+    
     /**
-     * @ORM\ManyToMany(targetEntity="Perso", inversedBy="friendsWithMe")
-     * @ORM\JoinTable(name="Contact",
-     *      joinColumns={@ORM\JoinColumn(name="perso_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="friend_perso_id", referencedColumnName="id")}
-     *      )
-     **/
-    private $myFriends;
-
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $created_at;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updated_at;
     /**
      * Constructor
      */
@@ -86,7 +90,6 @@ class Perso
         $this->registers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->owner = new \Doctrine\Common\Collections\ArrayCollection();
         $this->friendsWithMe = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->myFriends = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -215,6 +218,51 @@ class Perso
     }
 
     /**
+     * Set created_at
+     *
+     * @param \DateTime $createdAt
+     * @return Perso
+     */
+    public function setCreatedAt($createdAt)
+    {
+    	if(!$this->getCreatedAt())
+    	{
+    		$this->created_at = new \DateTime();
+    	}
+    }
+
+    /**
+     * Get created_at
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * Set updated_at
+     *
+     * @param \DateTime $updatedAt
+     * @return Perso
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updated_at = new \DateTime();
+    }
+
+    /**
+     * Get updated_at
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updated_at;
+    }
+
+    /**
      * Add registers
      *
      * @param \Coyote\ApiBundle\Entity\Register $registers
@@ -311,38 +359,5 @@ class Perso
     public function getFriendsWithMe()
     {
         return $this->friendsWithMe;
-    }
-
-    /**
-     * Add myFriends
-     *
-     * @param \Coyote\ApiBundle\Entity\Perso $myFriends
-     * @return Perso
-     */
-    public function addMyFriend(\Coyote\ApiBundle\Entity\Perso $myFriends)
-    {
-        $this->myFriends[] = $myFriends;
-
-        return $this;
-    }
-
-    /**
-     * Remove myFriends
-     *
-     * @param \Coyote\ApiBundle\Entity\Perso $myFriends
-     */
-    public function removeMyFriend(\Coyote\ApiBundle\Entity\Perso $myFriends)
-    {
-        $this->myFriends->removeElement($myFriends);
-    }
-
-    /**
-     * Get myFriends
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getMyFriends()
-    {
-        return $this->myFriends;
     }
 }
