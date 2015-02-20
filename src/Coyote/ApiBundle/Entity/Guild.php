@@ -193,4 +193,9 @@ class Guild
     {
         return $this->registers;
     }
+    
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

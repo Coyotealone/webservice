@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class PersoType extends AbstractType
+class PersoRestType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -22,8 +22,6 @@ class PersoType extends AbstractType
             ->add('sexe')
             ->add('created_at')
             ->add('updated_at')
-            ->add('friendsWithMe')
-            ->add('myFriends')
         ;
     }
     

@@ -240,4 +240,9 @@ class Stuff
     {
         return $this->stuffs;
     }
+    
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

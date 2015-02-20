@@ -12,8 +12,11 @@ use Coyote\ApiBundle\Entity\Stuff;
 use Coyote\ApiBundle\Entity\Boot;
 use Coyote\ApiBundle\Entity\Helmet;
 use Coyote\ApiBundle\Entity\Register;
-use Coyote\ApiBundle\Entity\Coyote\ApiBundle\Entity;
 use Coyote\ApiBundle\Form\PersoType;
+use Coyote\ApiBundle\Form\PersoRestType;
+use Coyote\ApiBundle\Form\GuildType;
+use Coyote\ApiBundle\Form\StuffType;
+use Coyote\ApiBundle\Form\Coyote\ApiBundle\Form;
 
 class DefaultRestController extends FOSRestController
 {
@@ -181,17 +184,19 @@ class DefaultRestController extends FOSRestController
     public function putPersoAction()
     {
         $em = $this->getDoctrine()->getManager();
-        //$json = json_decode($this->getRequest()->getContent(), true);
-        $json = $this->getRequest()->request->all();
+        
         $entity = new Perso();
-        $entity->setClass($json['class']);
-        $entity->setLevel($json['level']);
-        $entity->setName($json['name']);
-        $entity->setRace($json['race']);
-        $entity->setSexe($json['sexe']);
-        $em->persist($entity);
-        $em->flush();
-    
+        $form = $this->createForm(new PersoRestType(), $entity,
+                array('csrf_protection' => false,));
+        $request = $this->getRequest()->request->all();
+        $form->submit($request);
+        
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+        }
+        
         if ($entity->getId() > 0)
         {
             $view = $this->view(array(
@@ -249,14 +254,18 @@ class DefaultRestController extends FOSRestController
     public function putBootAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $json = $this->getRequest()->request->all();
+        
         $entity = new Boot();
-        $entity->setRarity($json['rarity']);
-        $entity->setLevel($json['level']);
-        $entity->setName($json['name']);
-        $entity->setWeight($json['weight']);
-        $em->persist($entity);
-        $em->flush();
+        $form = $this->createForm(new StuffType(), $entity, 
+                array('csrf_protection' => false,));
+        $request = $this->getRequest()->request->all();
+        $form->submit($request);
+        
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+        }
         
         if ($entity->getId() > 0)
         {
@@ -315,15 +324,19 @@ class DefaultRestController extends FOSRestController
     public function putHelmetAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $json = $this->getRequest()->request->all();
+        
         $entity = new Helmet();
-        $entity->setRarity($json['rarity']);
-        $entity->setLevel($json['level']);
-        $entity->setName($json['name']);
-        $entity->setWeight($json['weight']);
-        $em->persist($entity);
-        $em->flush();
-    
+        $form = $this->createForm(new StuffType(), $entity, 
+                array('csrf_protection' => false,));
+        $request = $this->getRequest()->request->all();
+        $form->submit($request);
+        
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+        }
+        
         if ($entity->getId() > 0)
         {
             $view = $this->view(array(
@@ -369,22 +382,28 @@ class DefaultRestController extends FOSRestController
     public function putGuildAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $json = $this->getRequest()->request->all();
+        
         $entity = new Guild();
-        $entity->setBanner($json['banner']);
-        $entity->setName($json['name']);
-        $em->persist($entity);
-        $em->flush();
-    
+        $form = $this->createForm(new GuildType(), $entity, 
+                array('csrf_protection' => false,));
+        $request = $this->getRequest()->request->all();
+        $form->submit($request);
+        
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+        }
+        
         if ($entity->getId() > 0)
         {
             $view = $this->view(array(
-                            "Stuff create" => $entity
+                            "Guild create" => $entity
             ),200);
         }
         else{
             $view = $this->view(array(
-                            "Stuff not create" => $entity
+                            "Guild not create" => $entity
             ),406);
         }
         return $this->handleView($view);
@@ -442,7 +461,7 @@ class DefaultRestController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         
         $entity = $em->getRepository("CoyoteApiBundle:Perso")->findOneById($id);
-        $form = $this->createForm(new PersoType(), $entity, 
+        $form = $this->createForm(new PersoRestType(), $entity, 
                 array('csrf_protection' => false,));
         $request = $this->getRequest()->request->all();
         $form->submit($request);
@@ -499,27 +518,20 @@ class DefaultRestController extends FOSRestController
     public function postGuildAction($id)
     {
         $em = $this->getDoctrine()->getManager();
+        
         $entity = $em->getRepository("CoyoteApiBundle:Guild")->findOneById($id);
-        $updated_at = $entity->getUpdatedAt();
-        $json = $this->getRequest()->request->all();
-    
-        if (!empty($json['banner']))
-        {
-            $entity->setBanner($json['banner']);
-        }
-        if (!empty($json['name']))
-        {
-            $entity->setName($json['name']);
+        $form = $this->createForm(new GuildType(), $entity, 
+                array('csrf_protection' => false,));
+        $request = $this->getRequest()->request->all();
+        $form->submit($request);
+        
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
         }
         
-        //A modifier*******************************
-        $entity->setUpdatedAt(new \DateTime());
-        //*****************************************
-        
-        $em->persist($entity);
-        $em->flush();
-    
-        if ($updated_at != $entity->getUpdatedAt())
+        if ($entity->getId() > 0)
         {
             $view = $this->view(array(
                             "Guild update" => $entity
@@ -577,35 +589,20 @@ class DefaultRestController extends FOSRestController
     public function postBootAction($id)
     {
         $em = $this->getDoctrine()->getManager();
+        
         $entity = $em->getRepository("CoyoteApiBundle:Boot")->findOneById($id);
-        $updated_at = $entity->getUpdatedAt();
-        $json = $this->getRequest()->request->all();
-
-        if (!empty($json['rarity']))
-        {
-            $entity->setRarity($json['rarity']);
+        $form = $this->createForm(new StuffType(), $entity, 
+                array('csrf_protection' => false,));
+        $request = $this->getRequest()->request->all();
+        $form->submit($request);
+        
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
         }
-        if (!empty($json['name']))
-        {
-            $entity->setLevel($json['level']);
-        }
-        if (!empty($json['weight']))
-        {
-            $entity->setWeight($json['weight']);
-        }
-        if (!empty($json['name']))
-        {
-            $entity->setName($json['name']);
-        }
-    
-        //A modifier*******************************
-        $entity->setUpdatedAt(new \DateTime());
-        //*****************************************
-    
-        $em->persist($entity);
-        $em->flush();
-    
-        if ($updated_at != $entity->getUpdatedAt())
+        
+        if ($entity->getId() > 0)
         {
             $view = $this->view(array(
                             "Boot update" => $entity
@@ -662,36 +659,21 @@ class DefaultRestController extends FOSRestController
      */
     public function postHelmetAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+    $em = $this->getDoctrine()->getManager();
+        
         $entity = $em->getRepository("CoyoteApiBundle:Helmet")->findOneById($id);
-        $updated_at = $entity->getUpdatedAt();
-        $json = $this->getRequest()->request->all();
-    
-        if (!empty($json['rarity']))
-        {
-            $entity->setRarity($json['rarity']);
+        $form = $this->createForm(new StuffType(), $entity, 
+                array('csrf_protection' => false,));
+        $request = $this->getRequest()->request->all();
+        $form->submit($request);
+        
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
         }
-        if (!empty($json['name']))
-        {
-            $entity->setLevel($json['level']);
-        }
-        if (!empty($json['weight']))
-        {
-            $entity->setWeight($json['weight']);
-        }
-        if (!empty($json['name']))
-        {
-            $entity->setName($json['name']);
-        }
-    
-        //A modifier*******************************
-        $entity->setUpdatedAt(new \DateTime());
-        //*****************************************
-    
-        $em->persist($entity);
-        $em->flush();
-    
-        if ($updated_at != $entity->getUpdatedAt())
+        
+        if ($entity->getId() > 0)
         {
             $view = $this->view(array(
                             "Helmet update" => $entity

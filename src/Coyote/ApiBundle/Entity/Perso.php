@@ -370,4 +370,9 @@ class Perso
     {
         return $this->friendsWithMe;
     }
+    
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
