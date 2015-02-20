@@ -441,12 +441,11 @@ class DefaultRestController extends FOSRestController
     {
         $em = $this->getDoctrine()->getManager();
         
-        $entity = new Perso();
+        $entity = $em->getRepository("CoyoteApiBundle:Perso")->findOneById($id);
         $form = $this->createForm(new PersoType(), $entity, 
                 array('csrf_protection' => false,));
-        
-        //$form->handleRequest($this->getRequest());
-        $form->submit($this->getRequest());
+        $request = $this->getRequest()->request->all();
+        $form->submit($request);
         
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -466,50 +465,6 @@ class DefaultRestController extends FOSRestController
             ),406);
         }
         return $this->handleView($view);
-        
-        /*$entity = $em->getRepository("CoyoteApiBundle:Perso")->findOneById($id);
-        $updated_at = $entity->getUpdatedAt();
-        $json = $this->getRequest()->request->all();
-
-        if (!empty($json['class']))
-        {
-            $entity->setClass($json['class']);
-        }
-        if (!empty($json['level']))
-        {
-            $entity->setLevel($json['level']);
-        }
-        if (!empty($json['name']))
-        {
-            $entity->setName($json['name']);
-        }
-        if (!empty($json['sexe']))
-        {
-             $entity->setSexe($json['sexe']);
-        }
-        if (!empty($json['race']))
-        {
-            $entity->setRace($json['race']);
-        }
-        
-        //A modifier*******************************
-            $entity->setUpdatedAt(new \DateTime());
-        //*****************************************
-        $em->persist($entity);
-        $em->flush();
-    
-        if ($updated_at != $entity->getUpdatedAt())
-        {
-            $view = $this->view(array(
-                            "Perso update" => $entity
-            ),200);
-        }
-        else{
-            $view = $this->view(array(
-                            "Perso not update" => $entity
-            ),406);
-        }
-        return $this->handleView($view);*/
     }
     
     /**

@@ -22,8 +22,8 @@ class PersoType extends AbstractType
             ->add('sexe')
             ->add('created_at')
             ->add('updated_at')
-            ->add('friendsWithMe')
-            ->add('myFriends')
+            //->add('friendsWithMe')
+            //->add('myFriends')
         ;
     }
     
