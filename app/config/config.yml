@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: rest.yml }
 
 framework:
     #esi:             ~
@@ -85,3 +86,7 @@ bazinga_faker:
             number: 50
         Coyote\ApiBundle\Entity\Boot:
             number: 50
+
+nelmio_api_doc:
+    name: "Web Service Application Programming Interface"
+
