@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Register
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class Register
 {
@@ -117,7 +118,7 @@ class Register
 
     /**
      * Set created_at
-     *
+     * @ORM\PrePersist
      * @param \DateTime $createdAt
      * @return Register
      */
@@ -141,7 +142,7 @@ class Register
 
     /**
      * Set updated_at
-     *
+     * @ORM\PrePersist
      * @param \DateTime $updatedAt
      * @return Register
      */

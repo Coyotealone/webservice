@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Guild
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class Guild
 {
@@ -34,7 +35,7 @@ class Guild
     private $banner;
 
     /**
-     * @ORM\OneToMany(targetEntity="Register", mappedBy="guild")
+     * @ORM\OneToMany(targetEntity="Register", mappedBy="guilds")
      */
     private $registers;
 
@@ -117,7 +118,7 @@ class Guild
 
     /**
      * Set created_at
-     *
+     * @ORM\PrePersist
      * @param \DateTime $createdAt
      * @return Guild
      */
@@ -141,7 +142,7 @@ class Guild
 
     /**
      * Set updated_at
-     *
+     * @ORM\PrePersist
      * @param \DateTime $updatedAt
      * @return Guild
      */

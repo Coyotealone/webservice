@@ -6,3 +6,8 @@ coyote_api:
 nelmio_api_doc_index:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
+
+ws_rest_default:
+    type: rest
+    resource: Coyote\ApiBundle\Controller\DefaultRestController
+    prefix: /api

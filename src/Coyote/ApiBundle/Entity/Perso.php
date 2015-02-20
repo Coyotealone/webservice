@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Perso
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class Perso
 {
@@ -68,6 +69,15 @@ class Perso
      * @ORM\ManyToMany(targetEntity="Perso", mappedBy="myFriends")
      **/
     private $friendsWithMe;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Perso", inversedBy="friendsWithMe")
+     * @ORM\JoinTable(name="Contact",
+     *      joinColumns={@ORM\JoinColumn(name="perso_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="friend_perso_id", referencedColumnName="id")}
+     *      )
+     **/
+    private $myFriends;
     
     /**
      * @var \DateTime
@@ -219,7 +229,7 @@ class Perso
 
     /**
      * Set created_at
-     *
+     * @ORM\PrePersist
      * @param \DateTime $createdAt
      * @return Perso
      */
@@ -243,7 +253,7 @@ class Perso
 
     /**
      * Set updated_at
-     *
+     * @ORM\PrePersist
      * @param \DateTime $updatedAt
      * @return Perso
      */

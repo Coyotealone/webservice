@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Stuff
 {
@@ -174,7 +175,7 @@ class Stuff
 
     /**
      * Set created_at
-     *
+     * @ORM\PrePersist
      * @param \DateTime $createdAt
      * @return Stuff
      */
@@ -198,7 +199,7 @@ class Stuff
 
     /**
      * Set updated_at
-     *
+     * @ORM\PrePersist
      * @param \DateTime $updatedAt
      * @return Stuff
      */
