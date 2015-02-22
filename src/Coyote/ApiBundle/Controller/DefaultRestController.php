@@ -16,7 +16,7 @@ use Coyote\ApiBundle\Form\PersoType;
 use Coyote\ApiBundle\Form\PersoRestType;
 use Coyote\ApiBundle\Form\GuildType;
 use Coyote\ApiBundle\Form\StuffType;
-use Coyote\ApiBundle\Form\Coyote\ApiBundle\Form;
+use Coyote\ApiBundle\Form\RegisterType;
 
 class DefaultRestController extends FOSRestController
 {
@@ -25,22 +25,30 @@ class DefaultRestController extends FOSRestController
      * @ApiDoc(
      *      section="Perso Entity",
      *      description="Get all perso from database"
+     *      statusCodes = {
+     *          200 = "OK",
+     *          201 = "Created",
+     *          204 = "No Content",
+     *          404 = "Not Found",
+     *          406 = "Not Acceptable",
+     *      }
      * )
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getAllPersoAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $datas = $em->getRepository("CoyoteApiBundle:Perso")->findAll();
-        if (count($datas) > 0)
+        $entity = $em->getRepository("CoyoteApiBundle:Perso")->findAll();
+        if (count($entity) > 0)
         {
             $view = $this->view(array(
-                            "Persos" => $datas
+                            "Persos" => $entity
             ),200);
         }
         else
         {
             $view = $this->view(array(
-                            "message" => "Empty Data"
+                            "No Persos" => $entity
             ),204);
         }
         return $this->handleView($view);
@@ -51,23 +59,31 @@ class DefaultRestController extends FOSRestController
      * @ApiDoc(
      *      section="Perso Entity",
      *      description="Get perso by id from database"
+     *      statusCodes = {
+     *          200 = "OK",
+     *          201 = "Created",
+     *          204 = "No Content",
+     *          404 = "Not Found",
+     *          406 = "Not Acceptable",
+     *      }
      * )
      * @param integer $id Id of the perso instance.
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getPersoByIdAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $data = $em->getRepository("CoyoteApiBundle:Perso")->findOneById($id);
-        if ($data)
+        $entity = $em->getRepository("CoyoteApiBundle:Perso")->findOneById($id);
+        if ($entity)
         {
             $view = $this->view(array(
-                            "Perso" => $data
+                            "Perso" => $entity
             ),200);
         }
         else
         {
             $view = $this->view(array(
-                  "message" => "Empty Data"
+                            "No Perso" => $entity
             ),204);
         }
         return $this->handleView($view);
@@ -112,6 +128,13 @@ class DefaultRestController extends FOSRestController
      * @ApiDoc(
      *      section="Guild Entity",
      *      description="Get guild by id from database"
+     *      statusCodes = {
+     *          200 = "OK",
+     *          201 = "Created",
+     *          204 = "No Content",
+     *          404 = "Not Found",
+     *          406 = "Not Acceptable",
+     *      }
      * )
      * @param integer $id Id of the guild instance.
      * @return \Symfony\Component\HttpFoundation\Response
@@ -119,17 +142,17 @@ class DefaultRestController extends FOSRestController
     public function getGuildById($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $data = $em->getRepository("CoyoteApiBundle:Guild")->findOneById($id);
-        if ($data)
+        $entity = $em->getRepository("CoyoteApiBundle:Guild")->findOneById($id);
+        if ($entity)
         {
             $view = $this->view(array(
-                            "Guild" => $data
+                            "Guild" => $entity
             ),200);
         }
         else
         {
             $view = $this->view(array(
-                            "message" => "Empty Data"
+                            "No Guild" => $entity
             ),204);
         }
         return $this->handleView($view);
@@ -218,13 +241,13 @@ class DefaultRestController extends FOSRestController
      *      {
      *          "name" = "name",
      *          "dataType" = "string",
-     *          "requirement" = "OK|KO",
+     *          "requirement" = "Chaussure|Botte",
      *          "description" = "The name of boot of the game"
      *      },
      *      {
      *          "name" = "rarity",
      *          "dataType" = "string",
-     *          "requirement" = "Warrior|Paladin",
+     *          "requirement" = "Epique|Legendaire",
      *          "description" = "The rarity of boot of the game"
      *      },
      *      {
@@ -288,13 +311,13 @@ class DefaultRestController extends FOSRestController
      *      {
      *          "name" = "name",
      *          "dataType" = "string",
-     *          "requirement" = "OK|KO",
+     *          "requirement" = "Casque|Chapeau",
      *          "description" = "The name of helmet of the game"
      *      },
      *      {
      *          "name" = "rarity",
      *          "dataType" = "string",
-     *          "requirement" = "Warrior|Paladin",
+     *          "requirement" = "Epique|Legendaire",
      *          "description" = "The rarity of helmet of the game"
      *      },
      *      {
@@ -358,13 +381,13 @@ class DefaultRestController extends FOSRestController
      *      {
      *          "name" = "name",
      *          "dataType" = "string",
-     *          "requirement" = "OK|KO",
+     *          "requirement" = "Guildeo|MasterGuild",
      *          "description" = "The name of guild of the game"
      *      },
      *      {
      *          "name" = "banner",
      *          "dataType" = "string",
-     *          "requirement" = "Warrior|Paladin",
+     *          "requirement" = "Guild winner",
      *          "description" = "The banner of guild of the game"
      *      },
      *      },
@@ -461,27 +484,34 @@ class DefaultRestController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         
         $entity = $em->getRepository("CoyoteApiBundle:Perso")->findOneById($id);
-        $form = $this->createForm(new PersoRestType(), $entity, 
-                array('csrf_protection' => false,));
-        $request = $this->getRequest()->request->all();
-        $form->submit($request);
-        
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-        }
-        
-        if ($entity->getId() > 0)
-        {
+        if (!$entity) {
             $view = $this->view(array(
-                            "Perso update" => $entity
-            ),200);
+                            "Not delete register" => $entity
+            ),404);
         }
-        else{
-            $view = $this->view(array(
-                            "Perso not update" => $entity
-            ),406);
+        else {
+            $form = $this->createForm(new PersoRestType(), $entity, 
+                    array('csrf_protection' => false,));
+            $request = $this->getRequest()->request->all();
+            $form->submit($request);
+            
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($entity);
+                $em->flush();
+            }
+            
+            if ($entity->getId() > 0)
+            {
+                $view = $this->view(array(
+                                "Perso update" => $entity
+                ),200);
+            }
+            else{
+                $view = $this->view(array(
+                                "Perso not update" => $entity
+                ),406);
+            }
         }
         return $this->handleView($view);
     }
@@ -493,12 +523,12 @@ class DefaultRestController extends FOSRestController
      *      {
      *          "name" = "name",
      *          "dataType" = "string",
-     *          "requirement" = "OK|KO",
+     *          "requirement" = "Guildeo|MasterGuild",
      *          "description" = "The name of guild of the game"
      *      },
      *      {
      *          "name" = "banner",
-     *          "dataType" = "string",
+     *          "dataType" = "Guild winner",
      *          "requirement" = "Warrior|Paladin",
      *          "description" = "The banner of guild of the game"
      *      },
@@ -520,27 +550,34 @@ class DefaultRestController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         
         $entity = $em->getRepository("CoyoteApiBundle:Guild")->findOneById($id);
-        $form = $this->createForm(new GuildType(), $entity, 
-                array('csrf_protection' => false,));
-        $request = $this->getRequest()->request->all();
-        $form->submit($request);
-        
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-        }
-        
-        if ($entity->getId() > 0)
-        {
+        if (!$entity) {
             $view = $this->view(array(
-                            "Guild update" => $entity
-            ),200);
+                            "Not delete register" => $entity
+            ),404);
         }
-        else{
-            $view = $this->view(array(
-                            "Guild not update" => $entity
-            ),406);
+        else {
+            $form = $this->createForm(new GuildType(), $entity, 
+                    array('csrf_protection' => false,));
+            $request = $this->getRequest()->request->all();
+            $form->submit($request);
+            
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($entity);
+                $em->flush();
+            }
+            
+            if ($entity->getId() > 0)
+            {
+                $view = $this->view(array(
+                                "Guild update" => $entity
+                ),200);
+            }
+            else{
+                $view = $this->view(array(
+                                "Guild not update" => $entity
+                ),406);
+            }
         }
         return $this->handleView($view);
     }
@@ -552,13 +589,13 @@ class DefaultRestController extends FOSRestController
      *      {
      *          "name" = "name",
      *          "dataType" = "string",
-     *          "requirement" = "OK|KO",
+     *          "requirement" = "Chaussure|Botte",
      *          "description" = "The name of boot of the game"
      *      },
      *      {
      *          "name" = "rarity",
      *          "dataType" = "string",
-     *          "requirement" = "Warrior|Paladin",
+     *          "requirement" = "Epique|Legendaire",
      *          "description" = "The rarity of boot of the game"
      *      },
      *      {
@@ -591,27 +628,34 @@ class DefaultRestController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         
         $entity = $em->getRepository("CoyoteApiBundle:Boot")->findOneById($id);
-        $form = $this->createForm(new StuffType(), $entity, 
-                array('csrf_protection' => false,));
-        $request = $this->getRequest()->request->all();
-        $form->submit($request);
-        
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-        }
-        
-        if ($entity->getId() > 0)
-        {
+        if (!$entity) {
             $view = $this->view(array(
-                            "Boot update" => $entity
-            ),200);
+                            "Not delete register" => $entity
+            ),404);
         }
-        else{
-            $view = $this->view(array(
-                            "Boot not update" => $entity
-            ),406);
+        else {
+            $form = $this->createForm(new StuffType(), $entity, 
+                    array('csrf_protection' => false,));
+            $request = $this->getRequest()->request->all();
+            $form->submit($request);
+            
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($entity);
+                $em->flush();
+            }
+            
+            if ($entity->getId() > 0)
+            {
+                $view = $this->view(array(
+                                "Boot update" => $entity
+                ),200);
+            }
+            else{
+                $view = $this->view(array(
+                                "Boot not update" => $entity
+                ),406);
+            }
         }
         return $this->handleView($view);
     }
@@ -623,13 +667,13 @@ class DefaultRestController extends FOSRestController
      *      {
      *          "name" = "name",
      *          "dataType" = "string",
-     *          "requirement" = "OK|KO",
+     *          "requirement" = "Chapeau|Casque",
      *          "description" = "The name of boot of the game"
      *      },
      *      {
      *          "name" = "rarity",
      *          "dataType" = "string",
-     *          "requirement" = "Warrior|Paladin",
+     *          "requirement" = "Epique|Legendaire",
      *          "description" = "The rarity of boot of the game"
      *      },
      *      {
@@ -662,7 +706,85 @@ class DefaultRestController extends FOSRestController
     $em = $this->getDoctrine()->getManager();
         
         $entity = $em->getRepository("CoyoteApiBundle:Helmet")->findOneById($id);
-        $form = $this->createForm(new StuffType(), $entity, 
+        if (!$entity) {
+            $view = $this->view(array(
+                            "Not delete register" => $entity
+            ),404);
+        }
+        else {
+            $form = $this->createForm(new StuffType(), $entity, 
+                    array('csrf_protection' => false,));
+            $request = $this->getRequest()->request->all();
+            $form->submit($request);
+            
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($entity);
+                $em->flush();
+            }
+            
+            if ($entity->getId() > 0)
+            {
+                $view = $this->view(array(
+                                "Helmet update" => $entity
+                ),200);
+            }
+            else{
+                $view = $this->view(array(
+                                "Helmet not update" => $entity
+                ),406);
+            }
+        }
+        return $this->handleView($view);
+    }
+    
+    /**
+     * @Rest\Put("register")
+     * @ApiDoc(
+     *      requirements = {
+     *      {
+     *          "name" = "level",
+     *          "dataType" = "integer",
+     *          "requirement" = "1",
+     *          "description" = "The level of register into guild"
+     *      },
+     *      {
+     *          "name" = "rank",
+     *          "dataType" = "string",
+     *          "requirement" = "Junior|Expert",
+     *          "description" = "The rank of register into guild"
+     *      },
+     *      {
+     *          "name" = "members",
+     *          "dataType" = "integer",
+     *          "requirement" = "1",
+     *          "description" = "The Id of perso"
+     *      },
+     *      {
+     *          "name" = "guilds",
+     *          "dataType" = "integer",
+     *          "requirement" = "1",
+     *          "description" = "The Id of guild"
+     *      },
+     *      },
+     *      section="Register Entity",
+     *      description="Insert new register into database",
+     *      statusCodes = {
+     *          200 = "OK",
+     *          201 = "Created",
+     *          204 = "No Content",
+     *          404 = "Not Found",
+     *          406 = "Not Acceptable",
+     *      }
+     * )
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function putRegister()
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $entity = new Register();
+        $form = $this->createForm(new RegisterType(), $entity,
                 array('csrf_protection' => false,));
         $request = $this->getRequest()->request->all();
         $form->submit($request);
@@ -676,51 +798,16 @@ class DefaultRestController extends FOSRestController
         if ($entity->getId() > 0)
         {
             $view = $this->view(array(
-                            "Helmet update" => $entity
+                            "Add register" => $entity
             ),200);
         }
         else{
             $view = $this->view(array(
-                            "Helmet not update" => $entity
+                            "Not add register" => $entity
             ),406);
         }
         return $this->handleView($view);
-    }
-    
-    /**
-     * @Rest\Put("register/{perso_id}&{guild_id}")
-     * @ApiDoc(
-     *      requirements = {
-     *      {
-     *          "name" = "level",
-     *          "dataType" = "integer",
-     *          "requirement" = "1",
-     *          "description" = "The level of register into guild"
-     *      },
-     *      {
-     *          "name" = "rank",
-     *          "dataType" = "string",
-     *          "requirement" = "Warrior|Paladin",
-     *          "description" = "The rank of register into guild"
-     *      },
-     *      },
-     *      section="Register Entity",
-     *      description="Insert new register into database",
-     *      statusCodes = {
-     *          200 = "OK",
-     *          201 = "Created",
-     *          204 = "No Content",
-     *          404 = "Not Found",
-     *          406 = "Not Acceptable",
-     *      }
-     * )
-     * @param integer $perso_id Id of the perso instance.
-     * @param integer $guild_id Id of the guild instance.
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function putRegister($perso_id, $guild_id)
-    {
-        $em = $this->getDoctrine()->getManager();
+        /*$em = $this->getDoctrine()->getManager();
         $data_guild = $em->getRepository("CoyoteApiBundle:Guild")->findOneById($guild_id);
         $data_perso = $em->getRepository("CoyoteApiBundle:Perso")->findOneById($perso_id);
         $json = $this->getRequest()->request->all();
@@ -758,6 +845,51 @@ class DefaultRestController extends FOSRestController
             $view = $this->view(array(
                             "Not Register guild" => $entity
             ),404);
+        }
+        return $this->handleView($view);*/
+    }
+    
+    /**
+     * @Rest\Delete("register/{id}")
+     * @ApiDoc(
+     *      section="Register Entity",
+     *      description="Insert new register into database",
+     *      statusCodes = {
+     *          200 = "OK",
+     *          201 = "Created",
+     *          204 = "No Content",
+     *          404 = "Not Found",
+     *          406 = "Not Acceptable",
+     *      }
+     * )
+     * @param integer $id Id of the register instance.
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteRegisterAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $entity = $em->getRepository("CoyoteApiBundle:Register")->findOneById($id);
+        if (!$entity) {
+            $view = $this->view(array(
+                            "Not delete register" => $entity
+            ),404);
+        }
+        else {
+            $form = $this->createForm(new RegisterType(), $entity,
+                    array('csrf_protection' => false,));
+            $request = $this->getRequest()->request->all();
+            $form->submit($request);
+            
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($entity);
+                $em->flush();
+            }
+            $view = $this->view(array(
+                            "Delete register" => $entity
+            ),200);
+        
         }
         return $this->handleView($view);
     }
