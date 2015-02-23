@@ -779,7 +779,7 @@ class DefaultRestController extends FOSRestController
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function putRegister()
+    public function putRegisterAction()
     {
         $em = $this->getDoctrine()->getManager();
         
@@ -807,46 +807,6 @@ class DefaultRestController extends FOSRestController
             ),406);
         }
         return $this->handleView($view);
-        /*$em = $this->getDoctrine()->getManager();
-        $data_guild = $em->getRepository("CoyoteApiBundle:Guild")->findOneById($guild_id);
-        $data_perso = $em->getRepository("CoyoteApiBundle:Perso")->findOneById($perso_id);
-        $json = $this->getRequest()->request->all();
-        
-        $entity = new Register();
-        if(!empty($data_guild) && !empty($data_perso))
-        {
-            $entity->setMembers($data_perso);
-            $entity->setGuilds($data_guild);
-            if (!empty($json['level']))
-            {
-                $entity->setLevel($json['level']);
-            }
-            if (!empty($json['rank']))
-            {
-                $entity->setRank($json['rank']);
-            }
-            
-            $em->persist($entity);
-            $em->flush();
-            
-            if ($entity->getId() > 0)
-            {
-                $view = $this->view(array(
-                                "Register guild" => $entity
-                ),200);
-            }
-            else{
-                $view = $this->view(array(
-                                "Not Register guild" => $entity
-                ),406);
-            }
-        }
-        else {
-            $view = $this->view(array(
-                            "Not Register guild" => $entity
-            ),404);
-        }
-        return $this->handleView($view);*/
     }
     
     /**
