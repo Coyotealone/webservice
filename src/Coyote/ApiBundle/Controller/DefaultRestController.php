@@ -24,7 +24,7 @@ class DefaultRestController extends FOSRestController
      * @Rest\Get("perso")
      * @ApiDoc(
      *      section="Perso Entity",
-     *      description="Get all perso from database"
+     *      description="Get all perso from database",
      *      statusCodes = {
      *          200 = "OK",
      *          201 = "Created",
@@ -58,7 +58,7 @@ class DefaultRestController extends FOSRestController
      * @Rest\Get("perso/{id}")
      * @ApiDoc(
      *      section="Perso Entity",
-     *      description="Get perso by id from database"
+     *      description="Get perso by id from database",
      *      statusCodes = {
      *          200 = "OK",
      *          201 = "Created",
@@ -127,7 +127,7 @@ class DefaultRestController extends FOSRestController
      * @Rest\Get("guild/{id}")
      * @ApiDoc(
      *      section="Guild Entity",
-     *      description="Get guild by id from database"
+     *      description="Get guild by id from database",
      *      statusCodes = {
      *          200 = "OK",
      *          201 = "Created",
@@ -765,7 +765,7 @@ class DefaultRestController extends FOSRestController
      *          "dataType" = "integer",
      *          "requirement" = "1",
      *          "description" = "The Id of guild"
-     *      },
+     *      }
      *      },
      *      section="Register Entity",
      *      description="Insert new register into database",
