@@ -6,6 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class GuildControllerTest extends WebTestCase
 {
+    public function testCompleteScenario()
+    {
+        $client = static::createClient();
+        
+        $crawler = $client->request('GET', '/guild/');
+        
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        
+    }
     /*
     public function testCompleteScenario()
     {

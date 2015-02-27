@@ -53,7 +53,7 @@ class DefaultRestController extends FOSRestController
         }
         return $this->handleView($view);
     }
-    
+
     /**
      * @Rest\Get("perso/{id}")
      * @ApiDoc(
@@ -88,9 +88,9 @@ class DefaultRestController extends FOSRestController
         }
         return $this->handleView($view);
     }
-    
-    
-    
+
+
+
     /**
      * @Rest\Get("guild")
      * @ApiDoc(
@@ -122,7 +122,7 @@ class DefaultRestController extends FOSRestController
         }
         return $this->handleView($view);
     }
-    
+
     /**
      * @Rest\Get("guild/{id}")
      * @ApiDoc(
@@ -157,7 +157,7 @@ class DefaultRestController extends FOSRestController
         }
         return $this->handleView($view);
     }
-    
+
     /**
      * @Rest\Put("perso")
      * @ApiDoc(
@@ -207,19 +207,19 @@ class DefaultRestController extends FOSRestController
     public function putPersoAction()
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         $entity = new Perso();
         $form = $this->createForm(new PersoRestType(), $entity,
                 array('csrf_protection' => false,));
         $request = $this->getRequest()->request->all();
         $form->submit($request);
-        
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
         }
-        
+
         if ($entity->getId() > 0)
         {
             $view = $this->view(array(
@@ -233,7 +233,7 @@ class DefaultRestController extends FOSRestController
         }
         return $this->handleView($view);
     }
-    
+
     /**
      * @Rest\Put("boot")
      * @ApiDoc(
@@ -277,19 +277,19 @@ class DefaultRestController extends FOSRestController
     public function putBootAction()
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         $entity = new Boot();
-        $form = $this->createForm(new StuffType(), $entity, 
+        $form = $this->createForm(new StuffType(), $entity,
                 array('csrf_protection' => false,));
         $request = $this->getRequest()->request->all();
         $form->submit($request);
-        
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
         }
-        
+
         if ($entity->getId() > 0)
         {
             $view = $this->view(array(
@@ -303,7 +303,7 @@ class DefaultRestController extends FOSRestController
         }
         return $this->handleView($view);
     }
-    
+
     /**
      * @Rest\Put("helmet")
      * @ApiDoc(
@@ -347,19 +347,19 @@ class DefaultRestController extends FOSRestController
     public function putHelmetAction()
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         $entity = new Helmet();
-        $form = $this->createForm(new StuffType(), $entity, 
+        $form = $this->createForm(new StuffType(), $entity,
                 array('csrf_protection' => false,));
         $request = $this->getRequest()->request->all();
         $form->submit($request);
-        
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
         }
-        
+
         if ($entity->getId() > 0)
         {
             $view = $this->view(array(
@@ -373,7 +373,7 @@ class DefaultRestController extends FOSRestController
         }
         return $this->handleView($view);
     }
-    
+
     /**
      * @Rest\Put("guild")
      * @ApiDoc(
@@ -405,19 +405,19 @@ class DefaultRestController extends FOSRestController
     public function putGuildAction()
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         $entity = new Guild();
-        $form = $this->createForm(new GuildType(), $entity, 
+        $form = $this->createForm(new GuildType(), $entity,
                 array('csrf_protection' => false,));
         $request = $this->getRequest()->request->all();
         $form->submit($request);
-        
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
         }
-        
+
         if ($entity->getId() > 0)
         {
             $view = $this->view(array(
@@ -431,7 +431,7 @@ class DefaultRestController extends FOSRestController
         }
         return $this->handleView($view);
     }
-    
+
     /**
      * @Rest\Post("perso/{id}")
      * @ApiDoc(
@@ -482,7 +482,7 @@ class DefaultRestController extends FOSRestController
     public function postPersoAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         $entity = $em->getRepository("CoyoteApiBundle:Perso")->findOneById($id);
         if (!$entity) {
             $view = $this->view(array(
@@ -490,17 +490,17 @@ class DefaultRestController extends FOSRestController
             ),404);
         }
         else {
-            $form = $this->createForm(new PersoRestType(), $entity, 
+            $form = $this->createForm(new PersoRestType(), $entity,
                     array('csrf_protection' => false,));
             $request = $this->getRequest()->request->all();
             $form->submit($request);
-            
+
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($entity);
                 $em->flush();
             }
-            
+
             if ($entity->getId() > 0)
             {
                 $view = $this->view(array(
@@ -515,7 +515,7 @@ class DefaultRestController extends FOSRestController
         }
         return $this->handleView($view);
     }
-    
+
     /**
      * @Rest\Post("guild/{id}")
      * @ApiDoc(
@@ -548,7 +548,7 @@ class DefaultRestController extends FOSRestController
     public function postGuildAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         $entity = $em->getRepository("CoyoteApiBundle:Guild")->findOneById($id);
         if (!$entity) {
             $view = $this->view(array(
@@ -556,17 +556,17 @@ class DefaultRestController extends FOSRestController
             ),404);
         }
         else {
-            $form = $this->createForm(new GuildType(), $entity, 
+            $form = $this->createForm(new GuildType(), $entity,
                     array('csrf_protection' => false,));
             $request = $this->getRequest()->request->all();
             $form->submit($request);
-            
+
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($entity);
                 $em->flush();
             }
-            
+
             if ($entity->getId() > 0)
             {
                 $view = $this->view(array(
@@ -581,7 +581,7 @@ class DefaultRestController extends FOSRestController
         }
         return $this->handleView($view);
     }
-    
+
     /**
      * @Rest\Post("boot/{id}")
      * @ApiDoc(
@@ -626,7 +626,7 @@ class DefaultRestController extends FOSRestController
     public function postBootAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         $entity = $em->getRepository("CoyoteApiBundle:Boot")->findOneById($id);
         if (!$entity) {
             $view = $this->view(array(
@@ -634,17 +634,17 @@ class DefaultRestController extends FOSRestController
             ),404);
         }
         else {
-            $form = $this->createForm(new StuffType(), $entity, 
+            $form = $this->createForm(new StuffType(), $entity,
                     array('csrf_protection' => false,));
             $request = $this->getRequest()->request->all();
             $form->submit($request);
-            
+
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($entity);
                 $em->flush();
             }
-            
+
             if ($entity->getId() > 0)
             {
                 $view = $this->view(array(
@@ -659,7 +659,7 @@ class DefaultRestController extends FOSRestController
         }
         return $this->handleView($view);
     }
-    
+
     /**
      * @Rest\Post("helmet/{id}")
      * @ApiDoc(
@@ -704,7 +704,7 @@ class DefaultRestController extends FOSRestController
     public function postHelmetAction($id)
     {
     $em = $this->getDoctrine()->getManager();
-        
+
         $entity = $em->getRepository("CoyoteApiBundle:Helmet")->findOneById($id);
         if (!$entity) {
             $view = $this->view(array(
@@ -712,17 +712,17 @@ class DefaultRestController extends FOSRestController
             ),404);
         }
         else {
-            $form = $this->createForm(new StuffType(), $entity, 
+            $form = $this->createForm(new StuffType(), $entity,
                     array('csrf_protection' => false,));
             $request = $this->getRequest()->request->all();
             $form->submit($request);
-            
+
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($entity);
                 $em->flush();
             }
-            
+
             if ($entity->getId() > 0)
             {
                 $view = $this->view(array(
@@ -737,7 +737,7 @@ class DefaultRestController extends FOSRestController
         }
         return $this->handleView($view);
     }
-    
+
     /**
      * @Rest\Put("register")
      * @ApiDoc(
@@ -782,19 +782,19 @@ class DefaultRestController extends FOSRestController
     public function putRegisterAction()
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         $entity = new Register();
         $form = $this->createForm(new RegisterType(), $entity,
                 array('csrf_protection' => false,));
         $request = $this->getRequest()->request->all();
         $form->submit($request);
-        
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
         }
-        
+
         if ($entity->getId() > 0)
         {
             $view = $this->view(array(
@@ -808,7 +808,7 @@ class DefaultRestController extends FOSRestController
         }
         return $this->handleView($view);
     }
-    
+
     /**
      * @Rest\Delete("register/{id}")
      * @ApiDoc(
@@ -828,7 +828,7 @@ class DefaultRestController extends FOSRestController
     public function deleteRegisterAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         $entity = $em->getRepository("CoyoteApiBundle:Register")->findOneById($id);
         if (!$entity) {
             $view = $this->view(array(
@@ -840,7 +840,7 @@ class DefaultRestController extends FOSRestController
                     array('csrf_protection' => false,));
             $request = $this->getRequest()->request->all();
             $form->submit($request);
-            
+
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($entity);
@@ -849,7 +849,7 @@ class DefaultRestController extends FOSRestController
             $view = $this->view(array(
                             "Delete register" => $entity
             ),200);
-        
+
         }
         return $this->handleView($view);
     }

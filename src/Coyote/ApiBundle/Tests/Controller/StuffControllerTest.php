@@ -6,6 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class StuffControllerTest extends WebTestCase
 {
+    public function testCompleteScenario()
+    {
+        $client = static::createClient();
+    
+        $crawler = $client->request('GET', '/stuff/');
+    
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    
+    }
     /*
     public function testCompleteScenario()
     {
