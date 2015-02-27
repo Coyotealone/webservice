@@ -813,7 +813,7 @@ class DefaultRestController extends FOSRestController
      * @Rest\Delete("register/{id}")
      * @ApiDoc(
      *      section="Register Entity",
-     *      description="Insert new register into database",
+     *      description="Remove register into database",
      *      statusCodes = {
      *          200 = "OK",
      *          201 = "Created",
