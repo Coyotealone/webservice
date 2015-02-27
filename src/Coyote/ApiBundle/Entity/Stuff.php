@@ -70,6 +70,14 @@ class Stuff
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updated_at;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->created_at = new \DateTime('now');
+    }
 
     /**
      * Get id
@@ -199,7 +207,7 @@ class Stuff
 
     /**
      * Set updated_at
-     * @ORM\PrePersist
+     * @ORM\PreUpdate
      * @param \DateTime $updatedAt
      * @return Stuff
      */
