@@ -57,14 +57,11 @@ class PersoAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('id')
             ->add('name')
             ->add('level')
             ->add('class')
             ->add('race')
             ->add('sexe')
-            ->add('created_at')
-            ->add('updated_at')
         ;
     }
 

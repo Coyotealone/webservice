@@ -61,6 +61,14 @@ class Register
     private $updated_at;
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->created_at = new \DateTime('now');
+    }
+    
+    /**
      * Get id
      *
      * @return integer 
@@ -142,7 +150,7 @@ class Register
 
     /**
      * Set updated_at
-     * @ORM\PrePersist
+     * @ORM\PreUpdate
      * @param \DateTime $updatedAt
      * @return Register
      */

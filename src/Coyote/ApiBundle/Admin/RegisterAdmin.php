@@ -51,11 +51,8 @@ class RegisterAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('id')
             ->add('level')
             ->add('rank')
-            ->add('created_at')
-            ->add('updated_at')
         ;
     }
 

@@ -51,11 +51,8 @@ class GuildAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('id')
             ->add('name')
             ->add('banner')
-            ->add('created_at')
-            ->add('updated_at')
         ;
     }
 

@@ -55,13 +55,10 @@ class StuffAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('id')
             ->add('name')
             ->add('rarity')
             ->add('level')
             ->add('weight')
-            ->add('created_at')
-            ->add('updated_at')
         ;
     }
 

@@ -100,6 +100,7 @@ class Perso
         $this->registers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->owner = new \Doctrine\Common\Collections\ArrayCollection();
         $this->friendsWithMe = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->created_at = new \DateTime('now');
     }
 
     /**
@@ -253,7 +254,7 @@ class Perso
 
     /**
      * Set updated_at
-     * @ORM\PrePersist
+     * @ORM\PreUpdate
      * @param \DateTime $updatedAt
      * @return Perso
      */
