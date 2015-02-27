@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Guild
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class Guild
 {
@@ -34,7 +35,7 @@ class Guild
     private $banner;
 
     /**
-     * @ORM\OneToMany(targetEntity="Register", mappedBy="guild")
+     * @ORM\OneToMany(targetEntity="Register", mappedBy="guilds")
      */
     private $registers;
 
@@ -51,12 +52,14 @@ class Guild
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updated_at;
+    
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->registers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->created_at = new \DateTime('now');
     }
 
     /**
@@ -117,7 +120,7 @@ class Guild
 
     /**
      * Set created_at
-     *
+     * @ORM\PrePersist
      * @param \DateTime $createdAt
      * @return Guild
      */
@@ -141,7 +144,7 @@ class Guild
 
     /**
      * Set updated_at
-     *
+     * @ORM\PreUpdate
      * @param \DateTime $updatedAt
      * @return Guild
      */
@@ -191,5 +194,10 @@ class Guild
     public function getRegisters()
     {
         return $this->registers;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
     }
 }

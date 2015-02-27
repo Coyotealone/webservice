@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Stuff
 {
@@ -69,6 +70,14 @@ class Stuff
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updated_at;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->created_at = new \DateTime('now');
+    }
 
     /**
      * Get id
@@ -174,7 +183,7 @@ class Stuff
 
     /**
      * Set created_at
-     *
+     * @ORM\PrePersist
      * @param \DateTime $createdAt
      * @return Stuff
      */
@@ -198,7 +207,7 @@ class Stuff
 
     /**
      * Set updated_at
-     *
+     * @ORM\PreUpdate
      * @param \DateTime $updatedAt
      * @return Stuff
      */
@@ -238,5 +247,10 @@ class Stuff
     public function getStuffs()
     {
         return $this->stuffs;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
     }
 }

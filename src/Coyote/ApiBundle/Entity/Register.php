@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Register
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class Register
 {
@@ -59,6 +60,14 @@ class Register
      */
     private $updated_at;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->created_at = new \DateTime('now');
+    }
+    
     /**
      * Get id
      *
@@ -117,7 +126,7 @@ class Register
 
     /**
      * Set created_at
-     *
+     * @ORM\PrePersist
      * @param \DateTime $createdAt
      * @return Register
      */
@@ -141,7 +150,7 @@ class Register
 
     /**
      * Set updated_at
-     *
+     * @ORM\PreUpdate
      * @param \DateTime $updatedAt
      * @return Register
      */

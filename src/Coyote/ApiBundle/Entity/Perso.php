@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Perso
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class Perso
 {
@@ -70,6 +71,15 @@ class Perso
     private $friendsWithMe;
     
     /**
+     * @ORM\ManyToMany(targetEntity="Perso", inversedBy="friendsWithMe")
+     * @ORM\JoinTable(name="Contact",
+     *      joinColumns={@ORM\JoinColumn(name="perso_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="friend_perso_id", referencedColumnName="id")}
+     *      )
+     **/
+    private $myFriends;
+    
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -90,6 +100,7 @@ class Perso
         $this->registers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->owner = new \Doctrine\Common\Collections\ArrayCollection();
         $this->friendsWithMe = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->created_at = new \DateTime('now');
     }
 
     /**
@@ -219,7 +230,7 @@ class Perso
 
     /**
      * Set created_at
-     *
+     * @ORM\PrePersist
      * @param \DateTime $createdAt
      * @return Perso
      */
@@ -243,7 +254,7 @@ class Perso
 
     /**
      * Set updated_at
-     *
+     * @ORM\PreUpdate
      * @param \DateTime $updatedAt
      * @return Perso
      */
@@ -359,5 +370,10 @@ class Perso
     public function getFriendsWithMe()
     {
         return $this->friendsWithMe;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
     }
 }

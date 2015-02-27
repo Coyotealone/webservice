@@ -23,7 +23,9 @@
         "willdurand/faker-bundle": "1.2.*@dev",
         "friendsofsymfony/rest-bundle": "1.6.*@dev",
         "jms/serializer-bundle": "0.13.*@dev",
-        "nelmio/api-doc-bundle": "2.7.*@dev"
+        "nelmio/api-doc-bundle": "2.7.*@dev",
+        "sonata-project/admin-bundle": "~2.3",
+        "sonata-project/doctrine-orm-admin-bundle": "~2.3"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
